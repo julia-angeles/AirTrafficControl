@@ -192,10 +192,10 @@ flowScheduler.add(trialsLoopEnd);
 flowScheduler.add(outroRoutineBegin());
 flowScheduler.add(outroRoutineEachFrame());
 flowScheduler.add(outroRoutineEnd());
-flowScheduler.add(quitPsychoJS, 'Thank you for your participation.', true);
+flowScheduler.add(quitPsychoJS, 'Thank you for your participation, you may now close this window and return to Qualtrics.', true);
 
 // quit if user presses Cancel in dialog box:
-dialogCancelScheduler.add(quitPsychoJS, 'Thank you for your participation.', false);
+dialogCancelScheduler.add(quitPsychoJS, 'Thank you for your participation, you may now close this window and return to Qualtrics.', false);
 
 psychoJS.start({
   expName: expName,
@@ -470,7 +470,7 @@ var ty_title;
 var thank_you;
 var play_button_7;
 var happy;
-var code_777;
+var next_button_6;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -2490,7 +2490,7 @@ async function experimentInit() {
   thank_you = new visual.TextStim({
     win: psychoJS.window,
     name: 'thank_you',
-    text: "Thank you for participating in the study. All sounds heard throughout are purely fictional and do not reflect the typical conversations of what occurs on a day-to-day basis during air traffic control. Please listen to the song below if you have been affected by any of the sounds heard throughout.  \n\nHappy - Pharrell Williams\n\n\n\n\n\nWhenever you're ready, close this tab to return you to Qualtrics and view the debrief form. You'll need to enter the 3-digit passcode below to continue, so you may want to note it down. (You may need to press 'Esc' or 'F11' to exit this tab)",
+    text: 'Thank you for participating in the study. All sounds heard throughout are purely fictional and do not reflect the typical conversations of what occurs on a day-to-day basis during air traffic control. Please listen to the song below if you have been affected by any of the sounds heard throughout.  \n\nHappy - Pharrell Williams\n\n\n\n\n\nWhenever you\'re ready, click the button below to save your data to your Downloads folder. When you return to Qualtrics you\'ll be prompted to upload your test data. Click "Choose File" and select your data file in your Downloads - it\'s name will begin with with your memorable code. ',
     font: 'Arial',
     units: undefined, 
     pos: [0, 0], draggable: false, height: 0.035,  wrapWidth: 1.5, ori: 0.0,
@@ -2522,17 +2522,22 @@ async function experimentInit() {
       secs: (- 1),
       });
   happy.setVolume(1.0);
-  code_777 = new visual.TextStim({
+  next_button_6 = new visual.ButtonStim({
     win: psychoJS.window,
-    name: 'code_777',
-    text: '777',
-    font: 'Arial',
-    units: undefined, 
-    pos: [0, (- 0.35)], draggable: false, height: 0.08,  wrapWidth: 1.5, ori: 0.0,
-    languageStyle: 'LTR',
-    color: new util.Color([(- 1.0), 1.0, (- 1.0)]),  opacity: undefined,
-    depth: -5.0 
+    name: 'next_button_6',
+    text: 'Next',
+    fillColor: [(- 1.0), 1.0, (- 1.0)],
+    borderColor: null,
+    color: [(- 1.0), (- 1.0), (- 1.0)],
+    colorSpace: 'rgb',
+    pos: [0, (- 0.38)],
+    letterHeight: 0.05,
+    size: [0.2, 0.5],
+    ori: 0.0
+    ,
+    depth: -5
   });
+  next_button_6.clock = new util.Clock();
   
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
@@ -6437,34 +6442,12 @@ function outroRoutineBegin(snapshot) {
         psychoJS.experiment.addData("tbibgs", "negative");
     }
     psychoJS.experiment.addData("memorable_code", expInfo['Memorable Code']);
-    
-    let filename = expInfo['Memorable Code'] + ' ' + expName + ' ' + psychoJS._experiment._datetime + '.csv';
-    
-    let dataObj = psychoJS._experiment._trialsData;
-    
-    let data = [Object.keys(dataObj[0])].concat(dataObj).map(it => {
-        return Object.values(it).toString()
-    }).join('\n')
-    
-    console.log('Saving data...');
-    fetch('https://pipe.jspsych.org/api/data', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: '*/*',
-        },
-        body: JSON.stringify({
-            experimentID: 'TgFTchr08QKi',
-            filename: filename,
-            data: data,
-        }),
-    }).then(response => response.json()).then(data => {
-        console.log(data);
-    })
     // reset play_button_7 to account for continued clicks & clear times on/off
     play_button_7.reset()
     happy.setValue('Happy.ogg');
     happy.setVolume(1.0);
+    // reset next_button_6 to account for continued clicks & clear times on/off
+    next_button_6.reset()
     psychoJS.experiment.addData('outro.started', globalClock.getTime());
     outroMaxDuration = null
     // keep track of which components have finished
@@ -6473,7 +6456,7 @@ function outroRoutineBegin(snapshot) {
     outroComponents.push(thank_you);
     outroComponents.push(play_button_7);
     outroComponents.push(happy);
-    outroComponents.push(code_777);
+    outroComponents.push(next_button_6);
     
     for (const thisComponent of outroComponents)
       if ('status' in thisComponent)
@@ -6563,15 +6546,44 @@ function outroRoutineEachFrame() {
       happy.status = PsychoJS.Status.FINISHED;
     }
     
-    // *code_777* updates
-    if (t >= 0.0 && code_777.status === PsychoJS.Status.NOT_STARTED) {
+    // *next_button_6* updates
+    if (t >= 0 && next_button_6.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
-      code_777.tStart = t;  // (not accounting for frame time here)
-      code_777.frameNStart = frameN;  // exact frame index
+      next_button_6.tStart = t;  // (not accounting for frame time here)
+      next_button_6.frameNStart = frameN;  // exact frame index
       
-      code_777.setAutoDraw(true);
+      next_button_6.setAutoDraw(true);
     }
     
+    if (next_button_6.status === PsychoJS.Status.STARTED) {
+      // check whether next_button_6 has been pressed
+      if (next_button_6.isClicked) {
+        if (!next_button_6.wasClicked) {
+          // store time of first click
+          next_button_6.timesOn.push(next_button_6.clock.getTime());
+          // store time clicked until
+          next_button_6.timesOff.push(next_button_6.clock.getTime());
+        } else {
+          // update time clicked until;
+          next_button_6.timesOff[next_button_6.timesOff.length - 1] = next_button_6.clock.getTime();
+        }
+        if (!next_button_6.wasClicked) {
+          // end routine when next_button_6 is clicked
+          continueRoutine = false;
+          
+        }
+        // if next_button_6 is still clicked next frame, it is not a new click
+        next_button_6.wasClicked = true;
+      } else {
+        // if next_button_6 is clicked next frame, it is a new click
+        next_button_6.wasClicked = false;
+      }
+    } else {
+      // keep clock at 0 if next_button_6 hasn't started / has finished
+      next_button_6.clock.reset();
+      // if next_button_6 is clicked next frame, it is a new click
+      next_button_6.wasClicked = false;
+    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -6608,10 +6620,14 @@ function outroRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('outro.stopped', globalClock.getTime());
+    psychoJS._saveResults = 1;
     psychoJS.experiment.addData('play_button_7.numClicks', play_button_7.numClicks);
     psychoJS.experiment.addData('play_button_7.timesOn', play_button_7.timesOn);
     psychoJS.experiment.addData('play_button_7.timesOff', play_button_7.timesOff);
     happy.stop();  // ensure sound has stopped at end of Routine
+    psychoJS.experiment.addData('next_button_6.numClicks', next_button_6.numClicks);
+    psychoJS.experiment.addData('next_button_6.timesOn', next_button_6.timesOn);
+    psychoJS.experiment.addData('next_button_6.timesOff', next_button_6.timesOff);
     // the Routine "outro" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
