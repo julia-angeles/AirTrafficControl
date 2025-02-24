@@ -1,4 +1,4 @@
-﻿/************ 
+/************ 
  * Atc *
  ************/
 
@@ -74,6 +74,8 @@ var test_play_4 = false;
 var test_play_5 = false;
 var test_play_6 = false;
 let n_lines = ["Lines/Neutral/Masc/Neutral-M-001.wav", "Lines/Neutral/Masc/Neutral-M-002.wav", "Lines/Neutral/Masc/Neutral-M-003.wav", "Lines/Neutral/Fem/Neutral-F-001.wav", "Lines/Neutral/Fem/Neutral-F-002.wav", "Lines/Neutral/Fem/Neutral-F-003.wav"];
+
+var next_delay = 0;
 
 // Run 'Before Experiment' code from setup
 let m_neg = ["Lines/Negative/Masc/Negative-M-001.wav", "Lines/Negative/Masc/Negative-M-002.wav", "Lines/Negative/Masc/Negative-M-003.wav", "Lines/Negative/Masc/Negative-M-004.wav", "Lines/Negative/Masc/Negative-M-005.wav", "Lines/Negative/Masc/Negative-M-006.wav", "Lines/Negative/Masc/Negative-M-007.wav", "Lines/Negative/Masc/Negative-M-008.wav", "Lines/Negative/Masc/Negative-M-009.wav", "Lines/Negative/Masc/Negative-M-010.wav", "Lines/Negative/Masc/Negative-M-011.wav", "Lines/Negative/Masc/Negative-M-012.wav", "Lines/Negative/Masc/Negative-M-013.wav", "Lines/Negative/Masc/Negative-M-014.wav", "Lines/Negative/Masc/Negative-M-015.wav", "Lines/Negative/Masc/Negative-M-016.wav"];
@@ -184,10 +186,13 @@ flowScheduler.add(trialsLoopEnd);
 flowScheduler.add(outroRoutineBegin());
 flowScheduler.add(outroRoutineEachFrame());
 flowScheduler.add(outroRoutineEnd());
-flowScheduler.add(quitPsychoJS, "Thank you for your participation, you may now close this window and return to Qualtrics. You may need to press 'Esc' to exit this window.", true);
+flowScheduler.add(outro_2RoutineBegin());
+flowScheduler.add(outro_2RoutineEachFrame());
+flowScheduler.add(outro_2RoutineEnd());
+flowScheduler.add(quitPsychoJS, "Thank you for your participation, you may now close this window and return to Qualtrics. You may need to press 'Esc' to exit this window. As a reminder, the password is 777.", true);
 
 // quit if user presses Cancel in dialog box:
-dialogCancelScheduler.add(quitPsychoJS, "Thank you for your participation, you may now close this window and return to Qualtrics. You may need to press 'Esc' to exit this window.", false);
+dialogCancelScheduler.add(quitPsychoJS, "Thank you for your participation, you may now close this window and return to Qualtrics. You may need to press 'Esc' to exit this window. As a reminder, the password is 777.", false);
 
 psychoJS.start({
   expName: expName,
@@ -406,6 +411,7 @@ var sound_test_5;
 var play_button_6;
 var sound_test_6;
 var next_button_5;
+var secret_box_5;
 var rulesClock;
 var cr_title_2;
 var cr_3;
@@ -463,6 +469,11 @@ var thank_you;
 var play_button_7;
 var happy;
 var next_button_6;
+var outro_2Clock;
+var ty_title_2;
+var instructions;
+var passcode;
+var next_button_7;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -1818,6 +1829,22 @@ async function experimentInit() {
   });
   next_button_5.clock = new util.Clock();
   
+  secret_box_5 = new visual.Rect ({
+    win: psychoJS.window, name: 'secret_box_5', 
+    width: [0.5, 0.5][0], height: [0.5, 0.5][1],
+    ori: 0.0, 
+    pos: [(- 2), (- 2)], 
+    draggable: false, 
+    anchor: 'center', 
+    lineWidth: 1.0, 
+    lineColor: new util.Color([(- 1.0), (- 1.0), (- 1.0)]), 
+    fillColor: new util.Color([(- 1.0), (- 1.0), (- 1.0)]), 
+    colorSpace: 'rgb', 
+    opacity: 0.0, 
+    depth: -19, 
+    interpolate: true, 
+  });
+  
   // Initialize components for Routine "rules"
   rulesClock = new util.Clock();
   cr_title_2 = new visual.TextStim({
@@ -2466,7 +2493,6 @@ async function experimentInit() {
   
   // Initialize components for Routine "outro"
   outroClock = new util.Clock();
-  psychoJS._saveResults = 0;
   ty_title = new visual.TextStim({
     win: psychoJS.window,
     name: 'ty_title',
@@ -2476,19 +2502,19 @@ async function experimentInit() {
     pos: [0, 0.35], draggable: false, height: 0.08,  wrapWidth: 1.5, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color([(- 1.0), 1.0, (- 1.0)]),  opacity: undefined,
-    depth: -1.0 
+    depth: 0.0 
   });
   
   thank_you = new visual.TextStim({
     win: psychoJS.window,
     name: 'thank_you',
-    text: 'Thank you for participating in the study. All sounds heard throughout are purely fictional and do not reflect the typical conversations of what occurs on a day-to-day basis during air traffic control. Please listen to the song below if you have been affected by any of the sounds heard throughout.  \n\nHappy - Pharrell Williams\n\n\n\n\n\nWhenever you\'re ready, click the button below to save your data to your Downloads folder. When you return to Qualtrics you\'ll be prompted to upload your test data. Click "Drop files or click here to upload" and select your data file in your Downloads - it\'s name will begin with with your memorable code. ',
+    text: "Thank you for participating in the study. All sounds heard throughout are purely fictional and do not reflect the typical conversations of what occurs on a day-to-day basis during air traffic control. Please listen to the song below if you have been affected by any of the sounds heard throughout.  \n\nHappy - Pharrell Williams\n\n\n\n\n\nWhenever you're ready, click the button below to proceed.",
     font: 'Arial',
     units: undefined, 
     pos: [0, 0], draggable: false, height: 0.035,  wrapWidth: 1.5, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color([(- 1.0), 1.0, (- 1.0)]),  opacity: undefined,
-    depth: -2.0 
+    depth: -1.0 
   });
   
   play_button_7 = new visual.ButtonStim({
@@ -2499,12 +2525,12 @@ async function experimentInit() {
     borderColor: null,
     color: [(- 1.0), (- 1.0), (- 1.0)],
     colorSpace: 'rgb',
-    pos: [0, (- 0.06)],
+    pos: [0, (- 0.1)],
     letterHeight: 0.05,
     size: [0.2, (- 0.05)],
     ori: 0.0
     ,
-    depth: -3
+    depth: -2
   });
   play_button_7.clock = new util.Clock();
   
@@ -2522,14 +2548,70 @@ async function experimentInit() {
     borderColor: null,
     color: [(- 1.0), (- 1.0), (- 1.0)],
     colorSpace: 'rgb',
-    pos: [0, (- 0.38)],
+    pos: [0, (- 0.35)],
     letterHeight: 0.05,
     size: [0.2, 0.5],
     ori: 0.0
     ,
-    depth: -5
+    depth: -4
   });
   next_button_6.clock = new util.Clock();
+  
+  // Initialize components for Routine "outro_2"
+  outro_2Clock = new util.Clock();
+  psychoJS._saveResults = 0;
+  ty_title_2 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'ty_title_2',
+    text: 'Thank you for your participation',
+    font: 'Arial',
+    units: undefined, 
+    pos: [0, 0.35], draggable: false, height: 0.08,  wrapWidth: 1.5, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color([(- 1.0), 1.0, (- 1.0)]),  opacity: undefined,
+    depth: -1.0 
+  });
+  
+  instructions = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'instructions',
+    text: 'When you return to Qualtrics, you\'ll need the password below to proceed, so note it down if you need to.\n\n\n\n\n\nAfter you have read all of the instructions on this page, click the Next button below to save the your data to your Downloads folder. After you return to Qualtrics you\'ll be prompted to upload your data file. Click where it says "click here to upload" and choose your file from your Downloads - its name will begin with your memorable code.',
+    font: 'Arial',
+    units: undefined, 
+    pos: [0, 0], draggable: false, height: 0.035,  wrapWidth: 1.5, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color([(- 1.0), 1.0, (- 1.0)]),  opacity: undefined,
+    depth: -2.0 
+  });
+  
+  passcode = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'passcode',
+    text: 'Password: 777',
+    font: 'Arial',
+    units: undefined, 
+    pos: [0, 0.05], draggable: false, height: 0.08,  wrapWidth: 1.5, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color([(- 1.0), 1.0, (- 1.0)]),  opacity: undefined,
+    depth: -3.0 
+  });
+  
+  next_button_7 = new visual.ButtonStim({
+    win: psychoJS.window,
+    name: 'next_button_7',
+    text: 'Next',
+    fillColor: [(- 1.0), 1.0, (- 1.0)],
+    borderColor: null,
+    color: [(- 1.0), (- 1.0), (- 1.0)],
+    colorSpace: 'rgb',
+    pos: [0, (- 0.35)],
+    letterHeight: 0.05,
+    size: [0.2, 0.5],
+    ori: 0.0
+    ,
+    depth: -4
+  });
+  next_button_7.clock = new util.Clock();
   
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
@@ -4570,6 +4652,7 @@ function intro_3RoutineBegin(snapshot) {
     intro_3Components.push(play_button_6);
     intro_3Components.push(sound_test_6);
     intro_3Components.push(next_button_5);
+    intro_3Components.push(secret_box_5);
     
     intro_3Components.forEach( function(thisComponent) {
       if ('status' in thisComponent)
@@ -4642,6 +4725,14 @@ function intro_3RoutineEachFrame() {
     if ((test_play_6 === true)) {
         test_play_6 = false;
     }
+    if ((secret_box_5.getOpacity() === 1)) {
+        if ((next_delay !== 420)) {
+            next_delay += 1;
+        } else {
+            next_button_5.setPos([0.75, (- 0.4)]);
+        }
+    }
+    
     
     // *bn_title* updates
     if (t >= 0.0 && bn_title.status === PsychoJS.Status.NOT_STARTED) {
@@ -4688,7 +4779,7 @@ function intro_3RoutineEachFrame() {
           var test_play_1;
           sound_test_1.status = NOT_STARTED;
           test_play_1 = true;
-          next_button_5.setPos([0.75, (- 0.4)]);
+          secret_box_5.setOpacity(1);
         }
         // if play_button_1 is still clicked next frame, it is not a new click
         play_button_1.wasClicked = true;
@@ -4741,7 +4832,7 @@ function intro_3RoutineEachFrame() {
           var test_play_2;
           sound_test_2.status = NOT_STARTED;
           test_play_2 = true;
-          next_button_5.setPos([0.75, (- 0.4)]);
+          secret_box_5.setOpacity(1);
         }
         // if play_button_2 is still clicked next frame, it is not a new click
         play_button_2.wasClicked = true;
@@ -4794,7 +4885,7 @@ function intro_3RoutineEachFrame() {
           var test_play_3;
           sound_test_3.status = NOT_STARTED;
           test_play_3 = true;
-          next_button_5.setPos([0.75, (- 0.4)]);
+          secret_box_5.setOpacity(1);
         }
         // if play_button_3 is still clicked next frame, it is not a new click
         play_button_3.wasClicked = true;
@@ -4847,7 +4938,7 @@ function intro_3RoutineEachFrame() {
           var test_play_4;
           sound_test_4.status = NOT_STARTED;
           test_play_4 = true;
-          next_button_5.setPos([0.75, (- 0.4)]);
+          secret_box_5.setOpacity(1);
         }
         // if play_button_4 is still clicked next frame, it is not a new click
         play_button_4.wasClicked = true;
@@ -4900,7 +4991,7 @@ function intro_3RoutineEachFrame() {
           var test_play_5;
           sound_test_5.status = NOT_STARTED;
           test_play_5 = true;
-          next_button_5.setPos([0.75, (- 0.4)]);
+          secret_box_5.setOpacity(1);
         }
         // if play_button_5 is still clicked next frame, it is not a new click
         play_button_5.wasClicked = true;
@@ -4953,7 +5044,7 @@ function intro_3RoutineEachFrame() {
           var test_play_6;
           sound_test_6.status = NOT_STARTED;
           test_play_6 = true;
-          next_button_5.setPos([0.75, (- 0.4)]);
+          secret_box_5.setOpacity(1);
         }
         // if play_button_6 is still clicked next frame, it is not a new click
         play_button_6.wasClicked = true;
@@ -5019,6 +5110,16 @@ function intro_3RoutineEachFrame() {
       // if next_button_5 is clicked next frame, it is a new click
       next_button_5.wasClicked = false;
     }
+    
+    // *secret_box_5* updates
+    if (t >= 0.0 && secret_box_5.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      secret_box_5.tStart = t;  // (not accounting for frame time here)
+      secret_box_5.frameNStart = frameN;  // exact frame index
+      
+      secret_box_5.setAutoDraw(true);
+    }
+    
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -6422,27 +6523,6 @@ function outroRoutineBegin(snapshot) {
     routineTimer.reset();
     outroMaxDurationReached = false;
     // update component parameters for each repeat
-    // Run 'Begin Routine' code from results_handler
-    answers.shift()
-    a_used.shift()
-    correct_answers.shift()
-    given_answers.shift()
-    answers.shift()
-    a_used.shift()
-    correct_answers.shift()
-    given_answers.shift()
-    
-    psychoJS.experiment.addData("correct_or_incorrect", answers);
-    psychoJS.experiment.addData("advice_taken", a_used);
-    psychoJS.experiment.addData("participant_answers", given_answers);
-    psychoJS.experiment.addData("correct_answers", correct_answers);
-    psychoJS.experiment.addData("expert", expert);
-    if ((positive === true)) {
-        psychoJS.experiment.addData("tbibgs", "positive");
-    } else {
-        psychoJS.experiment.addData("tbibgs", "negative");
-    }
-    psychoJS.experiment.addData("memorable_code", expInfo['Memorable Code']);
     // reset play_button_7 to account for continued clicks & clear times on/off
     play_button_7.reset()
     happy.setValue('Happy.ogg');
@@ -6622,7 +6702,6 @@ function outroRoutineEnd(snapshot) {
       }
     });
     psychoJS.experiment.addData('outro.stopped', globalClock.getTime());
-    psychoJS._saveResults = 1;
     psychoJS.experiment.addData('play_button_7.numClicks', play_button_7.numClicks);
     psychoJS.experiment.addData('play_button_7.timesOn', play_button_7.timesOn);
     psychoJS.experiment.addData('play_button_7.timesOff', play_button_7.timesOff);
@@ -6631,6 +6710,190 @@ function outroRoutineEnd(snapshot) {
     psychoJS.experiment.addData('next_button_6.timesOn', next_button_6.timesOn);
     psychoJS.experiment.addData('next_button_6.timesOff', next_button_6.timesOff);
     // the Routine "outro" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
+    // Routines running outside a loop should always advance the datafile row
+    if (currentLoop === psychoJS.experiment) {
+      psychoJS.experiment.nextEntry(snapshot);
+    }
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+var outro_2MaxDurationReached;
+var outro_2MaxDuration;
+var outro_2Components;
+function outro_2RoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //--- Prepare to start Routine 'outro_2' ---
+    t = 0;
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    outro_2Clock.reset();
+    routineTimer.reset();
+    outro_2MaxDurationReached = false;
+    // update component parameters for each repeat
+    // Run 'Begin Routine' code from results_handler
+    answers.shift()
+    a_used.shift()
+    correct_answers.shift()
+    given_answers.shift()
+    answers.shift()
+    a_used.shift()
+    correct_answers.shift()
+    given_answers.shift()
+    
+    psychoJS.experiment.addData("correct_or_incorrect", answers);
+    psychoJS.experiment.addData("advice_taken", a_used);
+    psychoJS.experiment.addData("participant_answers", given_answers);
+    psychoJS.experiment.addData("correct_answers", correct_answers);
+    psychoJS.experiment.addData("expert", expert);
+    if ((positive === true)) {
+        psychoJS.experiment.addData("tbibgs", "positive");
+    } else {
+        psychoJS.experiment.addData("tbibgs", "negative");
+    }
+    psychoJS.experiment.addData("memorable_code", expInfo['Memorable Code']);
+    // reset next_button_7 to account for continued clicks & clear times on/off
+    next_button_7.reset()
+    psychoJS.experiment.addData('outro_2.started', globalClock.getTime());
+    outro_2MaxDuration = null
+    // keep track of which components have finished
+    outro_2Components = [];
+    outro_2Components.push(ty_title_2);
+    outro_2Components.push(instructions);
+    outro_2Components.push(passcode);
+    outro_2Components.push(next_button_7);
+    
+    outro_2Components.forEach( function(thisComponent) {
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+       });
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function outro_2RoutineEachFrame() {
+  return async function () {
+    //--- Loop for each frame of Routine 'outro_2' ---
+    // get current time
+    t = outro_2Clock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *ty_title_2* updates
+    if (t >= 0.0 && ty_title_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      ty_title_2.tStart = t;  // (not accounting for frame time here)
+      ty_title_2.frameNStart = frameN;  // exact frame index
+      
+      ty_title_2.setAutoDraw(true);
+    }
+    
+    
+    // *instructions* updates
+    if (t >= 0.0 && instructions.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      instructions.tStart = t;  // (not accounting for frame time here)
+      instructions.frameNStart = frameN;  // exact frame index
+      
+      instructions.setAutoDraw(true);
+    }
+    
+    
+    // *passcode* updates
+    if (t >= 0.0 && passcode.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      passcode.tStart = t;  // (not accounting for frame time here)
+      passcode.frameNStart = frameN;  // exact frame index
+      
+      passcode.setAutoDraw(true);
+    }
+    
+    
+    // *next_button_7* updates
+    if (t >= 0 && next_button_7.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      next_button_7.tStart = t;  // (not accounting for frame time here)
+      next_button_7.frameNStart = frameN;  // exact frame index
+      
+      next_button_7.setAutoDraw(true);
+    }
+    
+    if (next_button_7.status === PsychoJS.Status.STARTED) {
+      // check whether next_button_7 has been pressed
+      if (next_button_7.isClicked) {
+        if (!next_button_7.wasClicked) {
+          // store time of first click
+          next_button_7.timesOn.push(next_button_7.clock.getTime());
+          // store time clicked until
+          next_button_7.timesOff.push(next_button_7.clock.getTime());
+        } else {
+          // update time clicked until;
+          next_button_7.timesOff[next_button_7.timesOff.length - 1] = next_button_7.clock.getTime();
+        }
+        if (!next_button_7.wasClicked) {
+          // end routine when next_button_7 is clicked
+          continueRoutine = false;
+          
+        }
+        // if next_button_7 is still clicked next frame, it is not a new click
+        next_button_7.wasClicked = true;
+      } else {
+        // if next_button_7 is clicked next frame, it is a new click
+        next_button_7.wasClicked = false;
+      }
+    } else {
+      // keep clock at 0 if next_button_7 hasn't started / has finished
+      next_button_7.clock.reset();
+      // if next_button_7 is clicked next frame, it is a new click
+      next_button_7.wasClicked = false;
+    }
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    outro_2Components.forEach( function(thisComponent) {
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+      }
+    });
+    
+    // refresh the screen if continuing
+    if (continueRoutine) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function outro_2RoutineEnd(snapshot) {
+  return async function () {
+    //--- Ending Routine 'outro_2' ---
+    outro_2Components.forEach( function(thisComponent) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    });
+    psychoJS.experiment.addData('outro_2.stopped', globalClock.getTime());
+    psychoJS._saveResults = 1;
+    psychoJS.experiment.addData('next_button_7.numClicks', next_button_7.numClicks);
+    psychoJS.experiment.addData('next_button_7.timesOn', next_button_7.timesOn);
+    psychoJS.experiment.addData('next_button_7.timesOff', next_button_7.timesOff);
+    // the Routine "outro_2" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
     // Routines running outside a loop should always advance the datafile row
